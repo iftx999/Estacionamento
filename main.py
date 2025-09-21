@@ -43,6 +43,15 @@ def entrada(placa: str = Form(...), modelo: str = Form(...), request: Request = 
         "historico": historico
     })
 
+@app.get("/historico", response_class=HTMLResponse)
+def historico(request: Request, db: Session = Depends(get_db)):
+    historico = veiculo_service.listar_historico(db)
+    return templates.TemplateResponse("historico.html", {
+        "request": request,
+        "historico": historico
+    })
+
+
 @app.post("/saida/{veiculo_id}", response_class=HTMLResponse)
 def saida(veiculo_id: int, request: Request = None, db: Session = Depends(get_db)):
     veiculo_service.registrar_saida(db, veiculo_id)

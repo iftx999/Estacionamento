@@ -9,7 +9,7 @@
 <div class="container">
     <h2 class="mb-4">🚗 Word Parking</h2>
 
-    <form action="/entrada" method="post" class="row g-3 mb-4">
+    <form action="/entrada" method="post" class="row g-3 mb-3">
         <div class="col-md-4">
             <input type="text" name="placa" class="form-control" placeholder="Placa" required>
         </div>
@@ -20,6 +20,12 @@
             <button type="submit" class="btn btn-success w-100">Registrar Entrada</button>
         </div>
     </form>
+
+    {% if message %}
+    <div class="alert alert-info">{{ message }}</div>
+    {% endif %}
+
+    <a href="/historico" class="btn btn-secondary mb-3">Ver Histórico Completo</a>
 
     <h4>Veículos no Local</h4>
     <table class="table table-striped">
@@ -36,34 +42,12 @@
             <tr>
                 <td>{{ v.placa }}</td>
                 <td>{{ v.modelo }}</td>
-                <td>{{ v.entrada.strftime("%d/%m/%Y %H:%M:%S") if v.entrada else "-" }}</td>
+                <td>{{ v.entrada.strftime("%d/%m/%Y %H:%M:%S") }}</td>
                 <td>
                     <form action="/saida/{{ v.id }}" method="post">
                         <button class="btn btn-danger btn-sm">Registrar Saída</button>
                     </form>
                 </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-    <h4>Histórico</h4>
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Placa</th>
-                <th>Modelo</th>
-                <th>Entrada</th>
-                <th>Saída</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for h in historico %}
-            <tr>
-                <td>{{ h.placa }}</td>
-                <td>{{ h.modelo }}</td>
-                <td>{{ h.entrada.strftime("%d/%m/%Y %H:%M:%S") if h.entrada else "-" }}</td>
-                <td>{{ h.saida.strftime("%d/%m/%Y %H:%M:%S") if h.saida else "-" }}</td>
             </tr>
             {% endfor %}
         </tbody>
