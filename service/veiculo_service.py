@@ -6,8 +6,12 @@ from escpos.printer import Usb
 VENDOR_ID = 0x0FE6
 PRODUCT_ID = 0x811E
 
-def listar_ativos(db):
-    return db.query(Veiculo).filter(Veiculo.saida == None).all()
+def listar_ativos(db, page: int = 1, per_page: int = 30):
+    offset = (page - 1) * per_page
+    query = db.query(Veiculo).filter(Veiculo.saida == None)
+    total = query.count()
+    veiculos = query.offset(offset).limit(per_page).all()
+    return veiculos, total
 
 def listar_historico(db):
     return db.query(Veiculo).all()
